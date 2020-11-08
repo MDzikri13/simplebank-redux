@@ -11,6 +11,10 @@ import {
     TRANSACTION_TRANSFER_SUCCESS,
     TRANSACTION_TRANSFER_FAIL,
     TRANSACTION_TRANSFER_RESET,
+    TRANSACTION_MUTASI_REQUEST,
+    TRANSACTION_MUTASI_SUCCESS,
+    TRANSACTION_MUTASI_FAIL,
+    TRANSACTION_MUTASI_RESET,
     TRANSACTION_SALDO_REQUEST,
     TRANSACTION_SALDO_SUCCESS,
     TRANSACTION_SALDO_FAIL,
@@ -55,6 +59,21 @@ export const transactionTransferReducer = (state = {}, action) => {
         case TRANSACTION_TRANSFER_FAIL:
             return { loading: false, error: action.payload }
         case TRANSACTION_TRANSFER_RESET:
+            return {};
+        default:
+            return state;
+    }
+}
+
+export const transactionMutasiReducer = (state = {}, action) => {
+    switch (action.type) {
+        case TRANSACTION_MUTASI_REQUEST:
+            return { loading: true };
+        case TRANSACTION_MUTASI_SUCCESS:
+            return { loading: false, success:true, transaction: action.payload };
+        case TRANSACTION_MUTASI_FAIL:
+            return { loading: false, error: action.payload }
+        case TRANSACTION_MUTASI_RESET:
             return {};
         default:
             return state;

@@ -2,7 +2,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { userLoginReducer, userRegisterReducer } from './reducers/userReducers'
-import { transactionDepositReducer, transactionWithdrawalReducer, transactionTransferReducer, transactionSaldoReducer } from './reducers/transactionReducers'
+import { transactionDepositReducer, transactionWithdrawalReducer, transactionTransferReducer, transactionMutasiReducer, transactionSaldoReducer } from './reducers/transactionReducers'
 
 const reducer = combineReducers({
   userLogin: userLoginReducer,
@@ -10,6 +10,7 @@ const reducer = combineReducers({
   transactionDeposit: transactionDepositReducer,
   transactionWithdrawal: transactionWithdrawalReducer,
   transactionTransfer: transactionTransferReducer,
+  transactionMutasi: transactionMutasiReducer,
   transactionSaldo: transactionSaldoReducer
 });
 

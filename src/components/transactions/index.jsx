@@ -8,7 +8,7 @@ import userImg from "../../assets/user.png";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../transactions/style.scss"
 import { logout } from '../../actions/userActions';
-import { deposit, withdrawal, transfer, saldo } from '../../actions/transactionActions'
+import { deposit, withdrawal, transfer, mutasi, saldo } from '../../actions/transactionActions'
 
 const Transactions = ({ history }) => {
   const dispatch = useDispatch();
@@ -28,6 +28,8 @@ const Transactions = ({ history }) => {
   const [accountTransfer, setAccountTransfer] = useState("");
   const [amountTransfer, setAmountTransfer] = useState("");
   const [descTransfer, setDescTransfer] = useState("");
+  const [dateFromTransaction, setDateFromTransaction] = useState("");
+  const [dateToTransaction, setDateToTransaction] = useState("");
 
   useEffect(() => {
     setAmountDeposit("");
@@ -37,6 +39,8 @@ const Transactions = ({ history }) => {
     setAccountTransfer("");
     setAmountTransfer("");
     setDescTransfer("");
+    setDateFromTransaction("");
+    setDateToTransaction("");
   }, [])
 
   useEffect(() => {
@@ -62,6 +66,11 @@ const Transactions = ({ history }) => {
   const submitTransferHandler = (e) => {
     e.preventDefault();
     dispatch(transfer(accountTransfer, accountTransferSender, amountTransfer, descTransfer));
+  }
+
+  const submitMutasiHandler = (e) => {
+    e.preventDefault();
+    dispatch(mutasi(accountDeposit, dateFromTransaction, dateToTransaction));
   }
 
   
@@ -248,7 +257,43 @@ const Transactions = ({ history }) => {
           </Form>
         </TabPanel>
         <TabPanel>
-          {/* isi code mutasi rekening disini */}
+        <div className="d-flex justify-content-center my-4">
+            <h1>MUTASI REKENING</h1>
+          </div>
+          <div className="mb-5">
+            <h4>Total Saldo : {saldoTotal != null && saldoTotal.account ? saldoTotal.account.saldo : 0}</h4>
+          </div>
+          <Form onSubmit={submitMutasiHandler} className="mt-3">
+            <Form.Group as={Row} controlId="formPlaintextRecepient">
+              <Form.Label column sm="2">
+                Date From
+              </Form.Label>
+              <Col sm="10">
+                <Form.Control
+                  type="date"
+                  value={dateFromTransaction}
+                  onChange={(e) => setDateFromTransaction(e.target.value)}
+                />
+              </Col>
+            </Form.Group>
+            <Form.Group as={Row} controlId="formPlaintextAmountTransfer">
+              <Form.Label column sm="2">
+                To Date
+              </Form.Label>
+              <Col sm="10">
+                <Form.Control 
+                  type="date" 
+                  value={dateToTransaction}
+                  onChange={(e) => setDateToTransaction(e.target.value)}
+                />
+              </Col>
+            </Form.Group>
+            <Col sm={{ span: 10, offset: 11 }}>
+              <Button variant="danger" type="submit">
+                View
+              </Button>
+            </Col>
+          </Form>
         </TabPanel>
       </Tabs>
     </Container>

@@ -9,6 +9,9 @@ import {
     TRANSACTION_TRANSFER_REQUEST,
     TRANSACTION_TRANSFER_SUCCESS,
     TRANSACTION_TRANSFER_FAIL,
+    TRANSACTION_MUTASI_REQUEST,
+    TRANSACTION_MUTASI_SUCCESS,
+    TRANSACTION_MUTASI_FAIL,
     TRANSACTION_SALDO_REQUEST,
     TRANSACTION_SALDO_SUCCESS,
     TRANSACTION_SALDO_FAIL,
@@ -142,6 +145,48 @@ export const transfer = ( accountTransfer, accountTransferSender, amountTransfer
         }
         dispatch({
             type: TRANSACTION_TRANSFER_FAIL,
+            payload: message,
+        })
+    }
+}
+
+export const mutasi = ( accountDeposit, dateFromTransaction, dateToTransaction ) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: TRANSACTION_MUTASI_REQUEST,
+        })
+
+        const { 
+            userLogin: { token },
+        } = getState()
+
+        const config = {
+            headers: {
+                "Content-Type" : "application/json",
+                Authorization : `${token}`,
+            },
+        };
+        const { data: {data} } = await axios.post("/api/v1/mutasi", {
+            transaction_type: 0,
+            sender: parseInt(accountDeposit),
+            datefrom: dateFromTransaction,
+            dateto: dateToTransaction,
+        }, config)
+        dispatch({
+            type: TRANSACTION_MUTASI_SUCCESS,
+            payload: data,
+        })
+        dispatch(saldo())
+    } catch (error) {
+        const message =
+            error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message
+        if (message === 'Not authorized, token failed') {
+            dispatch(logout())
+        }
+        dispatch({
+            type: TRANSACTION_MUTASI_FAIL,
             payload: message,
         })
     }
